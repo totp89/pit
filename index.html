@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Pit">
+<meta name="theme-color" content="#0a0a0a">
+<title>Pit</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111;
+    --border: #1e1e1e;
+    --text: #e8e4dc;
+    --muted: #4a4a4a;
+    --accent: #c8ff47;
+    --danger: #ff4747;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    padding-top: var(--safe-top);
+    padding-bottom: var(--safe-bottom);
+  }
+  .screen.active { display: flex; }
+
+  /* ── HOME SCREEN ── */
+  #home {
+    background: var(--bg);
+    overflow-y: auto;
+    padding: 48px 24px 32px;
+  }
+
+  .home-header {
+    margin-bottom: 40px;
+  }
+
+  .home-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 64px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .home-title span { color: var(--accent); font-style: italic; }
+
+  .home-sub {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  /* Resume card */
+  .resume-card {
+    display: none;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 28px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .resume-card.visible { display: block; }
+
+  .resume-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  .resume-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .resume-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 18px;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resume-meta {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .resume-progress {
+    margin-top: 12px;
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    overflow: hidden;
+  }
+
+  .resume-progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 1px;
+    transition: width 0.3s;
+  }
+
+  /* Section */
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .section-label button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    padding: 3px 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .section-label button:hover { border-color: #444; color: var(--text); }
+
+  /* Queue list */
+  .queue { margin-bottom: 32px; }
+
+  .queue-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .queue-item:first-child { border-top: 1px solid var(--border); }
+  .queue-item:active { opacity: 0.6; }
+
+  .queue-type {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 3px 7px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    white-space: nowrap;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .queue-info { flex: 1; min-width: 0; }
+
+  .queue-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 16px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .queue-source {
+    font-size: 10px;
+    color: var(--muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .queue-delete {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 4px;
+    flex-shrink: 0;
+    line-height: 1;
+    transition: color 0.15s;
+  }
+  .queue-delete:active { color: var(--danger); }
+
+  .empty-state {
+    text-align: center;
+    padding: 40px 0;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 2;
+  }
+
+  /* Add item */
+  .add-form {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px;
+    margin-bottom: 32px;
+  }
+
+  .add-form.hidden { display: none; }
+
+  .add-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .add-input:focus { border-color: #444; }
+  .add-input::placeholder { color: var(--muted); }
+
+  .add-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    padding: 9px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .btn:active { opacity: 0.7; }
+
+  .btn-primary { background: var(--accent); color: #000; font-weight: 500; }
+  .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+
+  /* RSS feeds */
+  .feeds-section { margin-bottom: 32px; }
+
+  .feed-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+  }
+
+  .feed-item:first-child { border-top: 1px solid var(--border); }
+
+  .feed-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .feed-name { flex: 1; color: var(--muted); }
+  .feed-status { font-size: 9px; color: var(--muted); }
+
+  .feed-delete {
+    background: none; border: none;
+    color: var(--muted); font-size: 14px;
+    cursor: pointer; padding: 2px;
+    transition: color 0.15s;
+  }
+  .feed-delete:active { color: var(--danger); }
+
+  /* ── READER SCREEN ── */
+  #reader {
+    background: var(--bg);
+    position: relative;
+  }
+
+  .reader-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--border);
+    z-index: 10;
+  }
+
+  .reader-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  .reader-nav {
+    position: absolute;
+    top: calc(var(--safe-top) + 2px);
+    left: 0; right: 0;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    z-index: 10;
+    background: linear-gradient(to bottom, var(--bg) 60%, transparent);
+  }
+
+  .reader-back {
+    background: none; border: none;
+    color: var(--muted); font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; cursor: pointer;
+    display: flex; align-items: center; gap: 6px;
+    padding: 6px 0;
+    transition: color 0.15s;
+  }
+  .reader-back:active { color: var(--text); }
+
+  .reader-source {
+    margin-left: auto;
+    font-size: 10px;
+    color: var(--muted);
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Article reader */
+  #article-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+  }
+
+  #article-content {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding: 80px 28px 80px;
+    display: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  #article-content h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 28px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  #article-content .article-meta {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #article-content .article-body {
+    font-family: 'Instrument Serif', serif;
+    font-size: 19px;
+    line-height: 1.75;
+    color: #d4d0c8;
+  }
+
+  #article-content .article-body p { margin-bottom: 1.4em; }
+  #article-content .article-body h2 { font-size: 22px; margin: 2em 0 0.8em; color: var(--text); }
+  #article-content .article-body h3 { font-size: 18px; margin: 1.6em 0 0.6em; color: var(--text); }
+  #article-content .article-body a { color: var(--accent); text-decoration: none; }
+  #article-content .article-body code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+  #article-content .article-body pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+    margin: 1.4em 0;
+  }
+  #article-content .article-body pre code {
+    background: none; padding: 0;
+  }
+  #article-content .article-body blockquote {
+    border-left: 2px solid var(--accent);
+    padding-left: 16px;
+    color: var(--muted);
+    margin: 1.4em 0;
+  }
+  #article-content .article-body img {
+    max-width: 100%;
+    border-radius: 4px;
+    margin: 1em 0;
+  }
+
+  /* PDF viewer */
+  #pdf-frame {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+  }
+
+  /* External fallback */
+  #external-view {
+    position: absolute;
+    inset: 0;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    text-align: center;
+    gap: 16px;
+  }
+
+  #external-view .ext-icon { font-size: 48px; }
+  #external-view .ext-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 22px;
+    line-height: 1.3;
+  }
+  #external-view .ext-sub { font-size: 11px; color: var(--muted); line-height: 1.7; }
+  #external-view .ext-btn {
+    margin-top: 8px;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  /* Loading */
+  #reader-loading {
+    position: absolute;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .spinner {
+    width: 24px; height: 24px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #reader-loading p { font-size: 11px; color: var(--muted); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: calc(var(--safe-bottom) + 24px);
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--text);
+    color: var(--bg);
+    font-size: 11px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 100;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 0; }
+</style>
+</head>
+<body>
+
+<!-- HOME -->
+<div class="screen active" id="home">
+
+  <div class="home-header">
+    <div class="home-title">the<br><span>pit.</span></div>
+    <div class="home-sub">your reading queue</div>
+  </div>
+
+  <!-- Resume card -->
+  <div class="resume-card" id="resumeCard">
+    <div class="resume-label">↩ continue reading</div>
+    <div class="resume-title" id="resumeTitle">—</div>
+    <div class="resume-meta" id="resumeMeta">—</div>
+    <div class="resume-progress">
+      <div class="resume-progress-fill" id="resumeProgressFill"></div>
+    </div>
+  </div>
+
+  <!-- Queue -->
+  <div class="section-label">
+    Queue
+    <button id="addBtn">+ add</button>
+  </div>
+
+  <div class="add-form hidden" id="addForm">
+    <input class="add-input" id="urlInput" type="url" placeholder="paste a URL — article, paper, arxiv, pdf…" autocomplete="off" autocorrect="off" autocapitalize="off">
+    <input class="add-input" id="titleInput" type="text" placeholder="title (optional — we'll try to fetch it)">
+    <div class="add-row">
+      <button class="btn btn-primary" id="addSubmit">Add to queue</button>
+      <button class="btn btn-ghost" id="addCancel">Cancel</button>
+    </div>
+  </div>
+
+  <div class="queue" id="queueList"></div>
+
+  <!-- RSS Feeds -->
+  <div class="section-label" style="margin-top:8px">
+    RSS Feeds
+    <button id="addFeedBtn">+ feed</button>
+  </div>
+
+  <div class="add-form hidden" id="feedForm">
+    <input class="add-input" id="feedUrlInput" type="url" placeholder="RSS feed URL">
+    <input class="add-input" id="feedNameInput" type="text" placeholder="name (e.g. Karpathy's Blog)">
+    <div class="add-row">
+      <button class="btn btn-primary" id="feedSubmit">Add feed</button>
+      <button class="btn btn-ghost" id="feedCancel">Cancel</button>
+    </div>
+  </div>
+
+  <div class="feeds-section" id="feedsList"></div>
+
+</div>
+
+<!-- READER -->
+<div class="screen" id="reader">
+  <div class="reader-bar"><div class="reader-bar-fill" id="readerBarFill"></div></div>
+
+  <div class="reader-nav">
+    <button class="reader-back" id="readerBack">← back</button>
+    <span class="reader-source" id="readerSource"></span>
+  </div>
+
+  <div id="reader-loading">
+    <div class="spinner"></div>
+    <p>fetching article…</p>
+  </div>
+
+  <div id="article-content">
+    <h1 id="article-title"></h1>
+    <div class="article-meta" id="article-meta"></div>
+    <div class="article-body" id="article-body"></div>
+  </div>
+
+  <iframe id="pdf-frame" sandbox="allow-scripts allow-same-origin"></iframe>
+  <iframe id="article-frame" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+
+  <div id="external-view">
+    <div class="ext-icon">↗</div>
+    <div class="ext-title" id="ext-title"></div>
+    <div class="ext-sub">This site can't be embedded directly.<br>It'll open in Safari — come back when you're done and your place is saved.</div>
+    <button class="ext-btn" id="ext-open">Open in Safari</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────
+const DB_KEY = 'pit_v1';
+
+function load() {
+  try { return JSON.parse(localStorage.getItem(DB_KEY)) || defaultState(); }
+  catch { return defaultState(); }
+}
+
+function defaultState() {
+  return {
+    queue: [],
+    feeds: [
+      { id: uid(), name: "Karpathy's Blog", url: "https://karpathy.github.io/feed.xml" },
+      { id: uid(), name: "Distill.pub", url: "https://distill.pub/rss.xml" },
+      { id: uid(), name: "Gwern.net", url: "https://www.gwern.net/feed" },
+      { id: uid(), name: "Arxiv CS.LG", url: "https://arxiv.org/rss/cs.LG" },
+    ],
+    progress: {},   // id -> { scrollPct, timestamp }
+    lastRead: null, // id of last opened item
+  };
+}
+
+function save(state) {
+  localStorage.setItem(DB_KEY, JSON.stringify(state));
+}
+
+function uid() {
+  return Math.random().toString(36).slice(2, 10);
+}
+
+let state = load();
+
+// ── RENDERING ──────────────────────────────────────────────────────────
+function renderHome() {
+  renderResume();
+  renderQueue();
+  renderFeeds();
+}
+
+function renderResume() {
+  const card = document.getElementById('resumeCard');
+  if (!state.lastRead) { card.classList.remove('visible'); return; }
+  const item = state.queue.find(i => i.id === state.lastRead);
+  if (!item) { card.classList.remove('visible'); return; }
+  const prog = state.progress[item.id];
+  card.classList.add('visible');
+  document.getElementById('resumeTitle').textContent = item.title || item.url;
+  document.getElementById('resumeMeta').textContent = hostname(item.url) + (prog ? ` · ${Math.round(prog.scrollPct)}% through` : '');
+  document.getElementById('resumeProgressFill').style.width = prog ? prog.scrollPct + '%' : '0%';
+  card.onclick = () => openItem(item);
+}
+
+function renderQueue() {
+  const el = document.getElementById('queueList');
+  if (!state.queue.length) {
+    el.innerHTML = '<div class="empty-state">nothing queued yet<br>paste a URL above to start</div>';
+    return;
+  }
+  el.innerHTML = state.queue.map(item => `
+    <div class="queue-item" data-id="${item.id}">
+      <span class="queue-type">${item.type}</span>
+      <div class="queue-info">
+        <div class="queue-title">${item.title || item.url}</div>
+        <div class="queue-source">${hostname(item.url)}</div>
+      </div>
+      <button class="queue-delete" data-id="${item.id}">×</button>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.queue-item').forEach(row => {
+    row.addEventListener('click', e => {
+      if (e.target.classList.contains('queue-delete')) return;
+      const item = state.queue.find(i => i.id === row.dataset.id);
+      if (item) openItem(item);
+    });
+  });
+
+  el.querySelectorAll('.queue-delete').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      state.queue = state.queue.filter(i => i.id !== btn.dataset.id);
+      if (state.lastRead === btn.dataset.id) state.lastRead = null;
+      save(state);
+      renderHome();
+    });
+  });
+}
+
+function renderFeeds() {
+  const el = document.getElementById('feedsList');
+  if (!state.feeds.length) {
+    el.innerHTML = '<div class="empty-state">no feeds added yet</div>';
+    return;
+  }
+  el.innerHTML = state.feeds.map(f => `
+    <div class="feed-item">
+      <div class="feed-dot"></div>
+      <div class="feed-name">${f.name}</div>
+      <div class="feed-status">live</div>
+      <button class="feed-delete" data-id="${f.id}">×</button>
+    </div>
+  `).join('');
+
+  el.querySelectorAll('.feed-delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.feeds = state.feeds.filter(f => f.id !== btn.dataset.id);
+      save(state);
+      renderFeeds();
+    });
+  });
+}
+
+// ── ADD ITEM ───────────────────────────────────────────────────────────
+document.getElementById('addBtn').addEventListener('click', () => {
+  document.getElementById('addForm').classList.toggle('hidden');
+  if (!document.getElementById('addForm').classList.contains('hidden')) {
+    document.getElementById('urlInput').focus();
+  }
+});
+
+document.getElementById('addCancel').addEventListener('click', () => {
+  document.getElementById('addForm').classList.add('hidden');
+  document.getElementById('urlInput').value = '';
+  document.getElementById('titleInput').value = '';
+});
+
+document.getElementById('addSubmit').addEventListener('click', async () => {
+  const url = document.getElementById('urlInput').value.trim();
+  if (!url) return;
+  const title = document.getElementById('titleInput').value.trim();
+  const type = detectType(url);
+  const item = { id: uid(), url, title: title || await fetchTitle(url), type, added: Date.now() };
+  state.queue.unshift(item);
+  save(state);
+  document.getElementById('addForm').classList.add('hidden');
+  document.getElementById('urlInput').value = '';
+  document.getElementById('titleInput').value = '';
+  renderHome();
+  showToast('added to queue');
+});
+
+// ── ADD FEED ───────────────────────────────────────────────────────────
+document.getElementById('addFeedBtn').addEventListener('click', () => {
+  document.getElementById('feedForm').classList.toggle('hidden');
+});
+
+document.getElementById('feedCancel').addEventListener('click', () => {
+  document.getElementById('feedForm').classList.add('hidden');
+});
+
+document.getElementById('feedSubmit').addEventListener('click', () => {
+  const url = document.getElementById('feedUrlInput').value.trim();
+  const name = document.getElementById('feedNameInput').value.trim();
+  if (!url) return;
+  state.feeds.push({ id: uid(), name: name || hostname(url), url });
+  save(state);
+  document.getElementById('feedForm').classList.add('hidden');
+  document.getElementById('feedUrlInput').value = '';
+  document.getElementById('feedNameInput').value = '';
+  renderFeeds();
+  showToast('feed added');
+});
+
+// Resume card click
+document.getElementById('resumeCard').addEventListener('click', () => {
+  const item = state.queue.find(i => i.id === state.lastRead);
+  if (item) openItem(item);
+});
+
+// ── OPEN ITEM ──────────────────────────────────────────────────────────
+let currentItem = null;
+let scrollEl = null;
+let scrollSaveTimer = null;
+
+function openItem(item) {
+  currentItem = item;
+  state.lastRead = item.id;
+  save(state);
+
+  showScreen('reader');
+
+  document.getElementById('readerSource').textContent = hostname(item.url);
+  document.getElementById('readerBarFill').style.width = '0%';
+
+  // Hide all reader views
+  document.getElementById('reader-loading').style.display = 'none';
+  document.getElementById('article-content').style.display = 'none';
+  document.getElementById('pdf-frame').style.display = 'none';
+  document.getElementById('article-frame').style.display = 'none';
+  document.getElementById('external-view').style.display = 'none';
+
+  if (item.type === 'pdf') {
+    openPDF(item);
+  } else {
+    openArticle(item);
+  }
+}
+
+async function openArticle(item) {
+  document.getElementById('reader-loading').style.display = 'flex';
+
+  // Try fetching via allorigins proxy
+  try {
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(item.url)}`;
+    const res = await fetch(proxy);
+    const data = await res.json();
+    if (data.contents) {
+      const parsed = parseArticle(data.contents, item.url);
+      if (parsed && parsed.text.length > 200) {
+        showArticleContent(item, parsed);
+        return;
+      }
+    }
+  } catch(e) {}
+
+  // Fallback: try embedding in iframe
+  try {
+    showIframeView(item);
+  } catch(e) {
+    showExternalView(item);
+  }
+}
+
+function parseArticle(html, baseUrl) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+
+  // Try to get title
+  const title =
+    doc.querySelector('h1')?.textContent?.trim() ||
+    doc.querySelector('title')?.textContent?.trim() ||
+    '';
+
+  // Remove noise
+  ['script','style','nav','header','footer','aside','.sidebar','.menu','.ad','.advertisement','.cookie','[role="banner"]','[role="navigation"]'].forEach(sel => {
+    doc.querySelectorAll(sel).forEach(el => el.remove());
+  });
+
+  // Find main content
+  const candidates = ['article','main','[role="main"]','.post-content','.article-content','.entry-content','.content','#content','.post','body'];
+  let content = null;
+  for (const sel of candidates) {
+    const el = doc.querySelector(sel);
+    if (el && el.textContent.trim().length > 200) { content = el; break; }
+  }
+  if (!content) content = doc.body;
+
+  // Fix relative URLs
+  content.querySelectorAll('img').forEach(img => {
+    const src = img.getAttribute('src');
+    if (src && !src.startsWith('http')) {
+      try { img.src = new URL(src, baseUrl).href; } catch {}
+    }
+  });
+
+  return { title, text: content.innerHTML };
+}
+
+function showArticleContent(item, parsed) {
+  document.getElementById('reader-loading').style.display = 'none';
+  const contentEl = document.getElementById('article-content');
+  contentEl.style.display = 'block';
+
+  document.getElementById('article-title').textContent = item.title || parsed.title;
+  document.getElementById('article-meta').textContent = hostname(item.url) + ' · ' + new Date(item.added).toLocaleDateString();
+  document.getElementById('article-body').innerHTML = parsed.text;
+
+  // Restore scroll position
+  scrollEl = contentEl;
+  const prog = state.progress[item.id];
+  if (prog && prog.scrollPct > 0) {
+    setTimeout(() => {
+      const maxScroll = contentEl.scrollHeight - contentEl.clientHeight;
+      contentEl.scrollTop = (prog.scrollPct / 100) * maxScroll;
+    }, 100);
+  }
+
+  // Track scroll
+  contentEl.addEventListener('scroll', onScroll, { passive: true });
+}
+
+function showIframeView(item) {
+  document.getElementById('reader-loading').style.display = 'none';
+  const frame = document.getElementById('article-frame');
+  frame.style.display = 'block';
+  frame.style.paddingTop = '50px';
+  frame.src = item.url;
+
+  // Can't track scroll in cross-origin iframe — save timestamp only
+  saveProgress(item.id, state.progress[item.id]?.scrollPct || 0);
+
+  frame.onerror = () => showExternalView(item);
+  setTimeout(() => {
+    // If iframe didn't load, show external
+    try {
+      if (!frame.contentDocument) showExternalView(item);
+    } catch { showExternalView(item); }
+  }, 3000);
+}
+
+function showExternalView(item) {
+  document.getElementById('reader-loading').style.display = 'none';
+  const el = document.getElementById('external-view');
+  el.style.display = 'flex';
+  document.getElementById('ext-title').textContent = item.title || item.url;
+  document.getElementById('ext-open').onclick = () => {
+    saveProgress(item.id, state.progress[item.id]?.scrollPct || 0);
+    window.open(item.url, '_blank');
+  };
+}
+
+function openPDF(item) {
+  document.getElementById('reader-loading').style.display = 'none';
+  const frame = document.getElementById('pdf-frame');
+  frame.style.display = 'block';
+  // Use PDF.js via Mozilla's CDN for best iOS support
+  const viewer = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(item.url)}`;
+  frame.src = viewer;
+  saveProgress(item.id, state.progress[item.id]?.scrollPct || 0);
+}
+
+// ── SCROLL TRACKING ────────────────────────────────────────────────────
+function onScroll() {
+  if (!scrollEl || !currentItem) return;
+  const pct = (scrollEl.scrollTop / (scrollEl.scrollHeight - scrollEl.clientHeight)) * 100;
+  document.getElementById('readerBarFill').style.width = Math.min(pct, 100) + '%';
+
+  clearTimeout(scrollSaveTimer);
+  scrollSaveTimer = setTimeout(() => saveProgress(currentItem.id, pct), 500);
+}
+
+function saveProgress(id, scrollPct) {
+  state.progress[id] = { scrollPct, timestamp: Date.now() };
+  save(state);
+}
+
+// ── BACK ───────────────────────────────────────────────────────────────
+document.getElementById('readerBack').addEventListener('click', () => {
+  // Clean up
+  document.getElementById('article-content').removeEventListener('scroll', onScroll);
+  document.getElementById('article-frame').src = '';
+  document.getElementById('pdf-frame').src = '';
+  scrollEl = null;
+  currentItem = null;
+  showScreen('home');
+  renderHome();
+});
+
+// ── UTILS ──────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function detectType(url) {
+  if (url.includes('arxiv.org/pdf') || url.endsWith('.pdf')) return 'pdf';
+  if (url.includes('arxiv.org/abs')) return 'arxiv';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'video';
+  return 'article';
+}
+
+function hostname(url) {
+  try { return new URL(url).hostname.replace('www.', ''); }
+  catch { return url; }
+}
+
+async function fetchTitle(url) {
+  try {
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+    const res = await fetch(proxy);
+    const data = await res.json();
+    const match = data.contents?.match(/<title[^>]*>([^<]+)<\/title>/i);
+    return match ? match[1].trim() : hostname(url);
+  } catch {
+    return hostname(url);
+  }
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// ── RSS FETCHING ───────────────────────────────────────────────────────
+async function fetchFeedItems(feed) {
+  try {
+    const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(feed.url)}`;
+    const res = await fetch(proxy);
+    const data = await res.json();
+    const xml = new DOMParser().parseFromString(data.contents, 'text/xml');
+    const items = [...xml.querySelectorAll('item, entry')].slice(0, 5);
+    return items.map(item => {
+      const url = item.querySelector('link')?.textContent?.trim() || item.querySelector('link')?.getAttribute('href') || '';
+      const title = item.querySelector('title')?.textContent?.trim() || '';
+      return { id: uid(), url, title, type: detectType(url), added: Date.now(), fromFeed: feed.name };
+    }).filter(i => i.url);
+  } catch { return []; }
+}
+
+async function refreshFeeds() {
+  for (const feed of state.feeds) {
+    const items = await fetchFeedItems(feed);
+    items.forEach(item => {
+      const exists = state.queue.some(q => q.url === item.url);
+      if (!exists) state.queue.push(item);
+    });
+  }
+  save(state);
+  renderQueue();
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────
+renderHome();
+// Refresh feeds in background
+setTimeout(refreshFeeds, 1000);
+
+// Service worker for offline
+if ('serviceWorker' in navigator) {
+  const sw = `
+    self.addEventListener('install', e => e.waitUntil(
+      caches.open('pit-v1').then(c => c.addAll(['/']))
+    ));
+    self.addEventListener('fetch', e => e.respondWith(
+      caches.match(e.request).then(r => r || fetch(e.request))
+    ));
+  `;
+  const blob = new Blob([sw], { type: 'application/javascript' });
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+}
+</script>
+</body>
+</html>
