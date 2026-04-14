@@ -21,9 +21,9 @@
     --safe-top: env(safe-area-inset-top, 0px);
     --safe-bottom: env(safe-area-inset-bottom, 0px);
   }
-
+ 
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
+ 
   html, body {
     height: 100%;
     overflow: hidden;
@@ -31,7 +31,7 @@
     color: var(--text);
     font-family: 'JetBrains Mono', monospace;
   }
-
+ 
   /* ── SCREENS ── */
   .screen {
     position: absolute;
@@ -42,18 +42,18 @@
     padding-bottom: var(--safe-bottom);
   }
   .screen.active { display: flex; }
-
+ 
   /* ── HOME SCREEN ── */
   #home {
     background: var(--bg);
     overflow-y: auto;
     padding: 48px 24px 32px;
   }
-
+ 
   .home-header {
     margin-bottom: 40px;
   }
-
+ 
   .home-title {
     font-family: 'Instrument Serif', serif;
     font-size: 64px;
@@ -61,16 +61,16 @@
     letter-spacing: -0.02em;
     margin-bottom: 8px;
   }
-
+ 
   .home-title span { color: var(--accent); font-style: italic; }
-
+ 
   .home-sub {
     font-size: 11px;
     color: var(--muted);
     letter-spacing: 0.1em;
     text-transform: uppercase;
   }
-
+ 
   /* Resume card */
   .resume-card {
     display: none;
@@ -83,9 +83,9 @@
     position: relative;
     overflow: hidden;
   }
-
+ 
   .resume-card.visible { display: block; }
-
+ 
   .resume-card::before {
     content: '';
     position: absolute;
@@ -93,7 +93,7 @@
     height: 2px;
     background: var(--accent);
   }
-
+ 
   .resume-label {
     font-size: 9px;
     letter-spacing: 0.2em;
@@ -101,7 +101,7 @@
     color: var(--accent);
     margin-bottom: 8px;
   }
-
+ 
   .resume-title {
     font-family: 'Instrument Serif', serif;
     font-size: 18px;
@@ -112,12 +112,12 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
+ 
   .resume-meta {
     font-size: 10px;
     color: var(--muted);
   }
-
+ 
   .resume-progress {
     margin-top: 12px;
     height: 2px;
@@ -125,14 +125,14 @@
     border-radius: 1px;
     overflow: hidden;
   }
-
+ 
   .resume-progress-fill {
     height: 100%;
     background: var(--accent);
     border-radius: 1px;
     transition: width 0.3s;
   }
-
+ 
   /* Section */
   .section-label {
     font-size: 9px;
@@ -144,7 +144,7 @@
     align-items: center;
     justify-content: space-between;
   }
-
+ 
   .section-label button {
     background: none;
     border: 1px solid var(--border);
@@ -157,12 +157,12 @@
     cursor: pointer;
     transition: border-color 0.15s, color 0.15s;
   }
-
+ 
   .section-label button:hover { border-color: #444; color: var(--text); }
-
+ 
   /* Queue list */
   .queue { margin-bottom: 32px; }
-
+ 
   .queue-item {
     display: flex;
     align-items: flex-start;
@@ -172,10 +172,10 @@
     cursor: pointer;
     transition: opacity 0.15s;
   }
-
+ 
   .queue-item:first-child { border-top: 1px solid var(--border); }
   .queue-item:active { opacity: 0.6; }
-
+ 
   .queue-type {
     font-size: 9px;
     letter-spacing: 0.1em;
@@ -188,9 +188,9 @@
     margin-top: 2px;
     flex-shrink: 0;
   }
-
+ 
   .queue-info { flex: 1; min-width: 0; }
-
+ 
   .queue-title {
     font-family: 'Instrument Serif', serif;
     font-size: 16px;
@@ -201,7 +201,7 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-
+ 
   .queue-source {
     font-size: 10px;
     color: var(--muted);
@@ -209,7 +209,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-
+ 
   .queue-delete {
     background: none;
     border: none;
@@ -222,7 +222,7 @@
     transition: color 0.15s;
   }
   .queue-delete:active { color: var(--danger); }
-
+ 
   .empty-state {
     text-align: center;
     padding: 40px 0;
@@ -230,7 +230,7 @@
     font-size: 12px;
     line-height: 2;
   }
-
+ 
   /* Add item */
   .add-form {
     background: var(--surface);
@@ -239,9 +239,9 @@
     padding: 18px;
     margin-bottom: 32px;
   }
-
+ 
   .add-form.hidden { display: none; }
-
+ 
   .add-input {
     width: 100%;
     background: var(--bg);
@@ -255,15 +255,15 @@
     outline: none;
     transition: border-color 0.15s;
   }
-
+ 
   .add-input:focus { border-color: #444; }
   .add-input::placeholder { color: var(--muted); }
-
+ 
   .add-row {
     display: flex;
     gap: 8px;
   }
-
+ 
   .btn {
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
@@ -275,13 +275,13 @@
     transition: opacity 0.15s;
   }
   .btn:active { opacity: 0.7; }
-
+ 
   .btn-primary { background: var(--accent); color: #000; font-weight: 500; }
   .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); }
-
+ 
   /* RSS feeds */
   .feeds-section { margin-bottom: 32px; }
-
+ 
   .feed-item {
     display: flex;
     align-items: center;
@@ -290,19 +290,19 @@
     border-bottom: 1px solid var(--border);
     font-size: 11px;
   }
-
+ 
   .feed-item:first-child { border-top: 1px solid var(--border); }
-
+ 
   .feed-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
     background: var(--accent);
     flex-shrink: 0;
   }
-
+ 
   .feed-name { flex: 1; color: var(--muted); }
   .feed-status { font-size: 9px; color: var(--muted); }
-
+ 
   .feed-delete {
     background: none; border: none;
     color: var(--muted); font-size: 14px;
@@ -310,13 +310,13 @@
     transition: color 0.15s;
   }
   .feed-delete:active { color: var(--danger); }
-
+ 
   /* ── READER SCREEN ── */
   #reader {
     background: var(--bg);
     position: relative;
   }
-
+ 
   .reader-bar {
     position: absolute;
     top: 0; left: 0; right: 0;
@@ -324,14 +324,14 @@
     background: var(--border);
     z-index: 10;
   }
-
+ 
   .reader-bar-fill {
     height: 100%;
     background: var(--accent);
     width: 0%;
     transition: width 0.1s;
   }
-
+ 
   .reader-nav {
     position: absolute;
     top: calc(var(--safe-top) + 2px);
@@ -342,7 +342,7 @@
     z-index: 10;
     background: linear-gradient(to bottom, var(--bg) 60%, transparent);
   }
-
+ 
   .reader-back {
     background: none; border: none;
     color: var(--muted); font-family: 'JetBrains Mono', monospace;
@@ -352,7 +352,7 @@
     transition: color 0.15s;
   }
   .reader-back:active { color: var(--text); }
-
+ 
   .reader-source {
     margin-left: auto;
     font-size: 10px;
@@ -362,7 +362,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-
+ 
   /* Article reader */
   #article-frame {
     position: absolute;
@@ -372,7 +372,7 @@
     border: none;
     display: none;
   }
-
+ 
   #article-content {
     position: absolute;
     inset: 0;
@@ -381,7 +381,7 @@
     display: none;
     -webkit-overflow-scrolling: touch;
   }
-
+ 
   #article-content h1 {
     font-family: 'Instrument Serif', serif;
     font-size: 28px;
@@ -390,7 +390,7 @@
     margin-bottom: 16px;
     font-weight: 400;
   }
-
+ 
   #article-content .article-meta {
     font-size: 11px;
     color: var(--muted);
@@ -398,14 +398,14 @@
     padding-bottom: 24px;
     border-bottom: 1px solid var(--border);
   }
-
+ 
   #article-content .article-body {
     font-family: 'Instrument Serif', serif;
     font-size: 19px;
     line-height: 1.75;
     color: #d4d0c8;
   }
-
+ 
   #article-content .article-body p { margin-bottom: 1.4em; }
   #article-content .article-body h2 { font-size: 22px; margin: 2em 0 0.8em; color: var(--text); }
   #article-content .article-body h3 { font-size: 18px; margin: 1.6em 0 0.6em; color: var(--text); }
@@ -440,7 +440,7 @@
     border-radius: 4px;
     margin: 1em 0;
   }
-
+ 
   /* PDF viewer */
   #pdf-frame {
     position: absolute;
@@ -450,7 +450,7 @@
     border: none;
     display: none;
   }
-
+ 
   /* External fallback */
   #external-view {
     position: absolute;
@@ -463,7 +463,7 @@
     text-align: center;
     gap: 16px;
   }
-
+ 
   #external-view .ext-icon { font-size: 48px; }
   #external-view .ext-title {
     font-family: 'Instrument Serif', serif;
@@ -484,7 +484,7 @@
     cursor: pointer;
     width: 100%;
   }
-
+ 
   /* Loading */
   #reader-loading {
     position: absolute;
@@ -495,7 +495,7 @@
     flex-direction: column;
     gap: 16px;
   }
-
+ 
   .spinner {
     width: 24px; height: 24px;
     border: 2px solid var(--border);
@@ -503,11 +503,11 @@
     border-radius: 50%;
     animation: spin 0.8s linear infinite;
   }
-
+ 
   @keyframes spin { to { transform: rotate(360deg); } }
-
+ 
   #reader-loading p { font-size: 11px; color: var(--muted); }
-
+ 
   /* Toast */
   .toast {
     position: fixed;
@@ -526,21 +526,21 @@
     z-index: 100;
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
+ 
   /* Scrollbar */
   ::-webkit-scrollbar { width: 0; }
 </style>
 </head>
 <body>
-
+ 
 <!-- HOME -->
 <div class="screen active" id="home">
-
+ 
   <div class="home-header">
     <div class="home-title">the<br><span>pit.</span></div>
     <div class="home-sub">your reading queue</div>
   </div>
-
+ 
   <!-- Resume card -->
   <div class="resume-card" id="resumeCard">
     <div class="resume-label">↩ continue reading</div>
@@ -550,13 +550,13 @@
       <div class="resume-progress-fill" id="resumeProgressFill"></div>
     </div>
   </div>
-
+ 
   <!-- Queue -->
   <div class="section-label">
     Queue
     <button id="addBtn">+ add</button>
   </div>
-
+ 
   <div class="add-form hidden" id="addForm">
     <input class="add-input" id="urlInput" type="url" placeholder="paste a URL — article, paper, arxiv, pdf…" autocomplete="off" autocorrect="off" autocapitalize="off">
     <input class="add-input" id="titleInput" type="text" placeholder="title (optional — we'll try to fetch it)">
@@ -565,15 +565,15 @@
       <button class="btn btn-ghost" id="addCancel">Cancel</button>
     </div>
   </div>
-
+ 
   <div class="queue" id="queueList"></div>
-
+ 
   <!-- RSS Feeds -->
   <div class="section-label" style="margin-top:8px">
     RSS Feeds
     <button id="addFeedBtn">+ feed</button>
   </div>
-
+ 
   <div class="add-form hidden" id="feedForm">
     <input class="add-input" id="feedUrlInput" type="url" placeholder="RSS feed URL">
     <input class="add-input" id="feedNameInput" type="text" placeholder="name (e.g. Karpathy's Blog)">
@@ -582,34 +582,34 @@
       <button class="btn btn-ghost" id="feedCancel">Cancel</button>
     </div>
   </div>
-
+ 
   <div class="feeds-section" id="feedsList"></div>
-
+ 
 </div>
-
+ 
 <!-- READER -->
 <div class="screen" id="reader">
   <div class="reader-bar"><div class="reader-bar-fill" id="readerBarFill"></div></div>
-
+ 
   <div class="reader-nav">
     <button class="reader-back" id="readerBack">← back</button>
     <span class="reader-source" id="readerSource"></span>
   </div>
-
+ 
   <div id="reader-loading">
     <div class="spinner"></div>
     <p>fetching article…</p>
   </div>
-
+ 
   <div id="article-content">
     <h1 id="article-title"></h1>
     <div class="article-meta" id="article-meta"></div>
     <div class="article-body" id="article-body"></div>
   </div>
-
+ 
   <iframe id="pdf-frame" sandbox="allow-scripts allow-same-origin"></iframe>
   <iframe id="article-frame" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-
+ 
   <div id="external-view">
     <div class="ext-icon">↗</div>
     <div class="ext-title" id="ext-title"></div>
@@ -617,18 +617,18 @@
     <button class="ext-btn" id="ext-open">Open in Safari</button>
   </div>
 </div>
-
+ 
 <div class="toast" id="toast"></div>
-
+ 
 <script>
 // ── STATE ──────────────────────────────────────────────────────────────
 const DB_KEY = 'pit_v1';
-
+ 
 function load() {
   try { return JSON.parse(localStorage.getItem(DB_KEY)) || defaultState(); }
   catch { return defaultState(); }
 }
-
+ 
 function defaultState() {
   return {
     queue: [],
@@ -642,24 +642,24 @@ function defaultState() {
     lastRead: null, // id of last opened item
   };
 }
-
+ 
 function save(state) {
   localStorage.setItem(DB_KEY, JSON.stringify(state));
 }
-
+ 
 function uid() {
   return Math.random().toString(36).slice(2, 10);
 }
-
+ 
 let state = load();
-
+ 
 // ── RENDERING ──────────────────────────────────────────────────────────
 function renderHome() {
   renderResume();
   renderQueue();
   renderFeeds();
 }
-
+ 
 function renderResume() {
   const card = document.getElementById('resumeCard');
   if (!state.lastRead) { card.classList.remove('visible'); return; }
@@ -672,7 +672,7 @@ function renderResume() {
   document.getElementById('resumeProgressFill').style.width = prog ? prog.scrollPct + '%' : '0%';
   card.onclick = () => openItem(item);
 }
-
+ 
 function renderQueue() {
   const el = document.getElementById('queueList');
   if (!state.queue.length) {
@@ -689,7 +689,7 @@ function renderQueue() {
       <button class="queue-delete" data-id="${item.id}">×</button>
     </div>
   `).join('');
-
+ 
   el.querySelectorAll('.queue-item').forEach(row => {
     row.addEventListener('click', e => {
       if (e.target.classList.contains('queue-delete')) return;
@@ -697,7 +697,7 @@ function renderQueue() {
       if (item) openItem(item);
     });
   });
-
+ 
   el.querySelectorAll('.queue-delete').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
@@ -708,7 +708,7 @@ function renderQueue() {
     });
   });
 }
-
+ 
 function renderFeeds() {
   const el = document.getElementById('feedsList');
   if (!state.feeds.length) {
@@ -723,7 +723,7 @@ function renderFeeds() {
       <button class="feed-delete" data-id="${f.id}">×</button>
     </div>
   `).join('');
-
+ 
   el.querySelectorAll('.feed-delete').forEach(btn => {
     btn.addEventListener('click', () => {
       state.feeds = state.feeds.filter(f => f.id !== btn.dataset.id);
@@ -732,7 +732,7 @@ function renderFeeds() {
     });
   });
 }
-
+ 
 // ── ADD ITEM ───────────────────────────────────────────────────────────
 document.getElementById('addBtn').addEventListener('click', () => {
   document.getElementById('addForm').classList.toggle('hidden');
@@ -740,13 +740,13 @@ document.getElementById('addBtn').addEventListener('click', () => {
     document.getElementById('urlInput').focus();
   }
 });
-
+ 
 document.getElementById('addCancel').addEventListener('click', () => {
   document.getElementById('addForm').classList.add('hidden');
   document.getElementById('urlInput').value = '';
   document.getElementById('titleInput').value = '';
 });
-
+ 
 document.getElementById('addSubmit').addEventListener('click', async () => {
   const url = document.getElementById('urlInput').value.trim();
   if (!url) return;
@@ -761,16 +761,16 @@ document.getElementById('addSubmit').addEventListener('click', async () => {
   renderHome();
   showToast('added to queue');
 });
-
+ 
 // ── ADD FEED ───────────────────────────────────────────────────────────
 document.getElementById('addFeedBtn').addEventListener('click', () => {
   document.getElementById('feedForm').classList.toggle('hidden');
 });
-
+ 
 document.getElementById('feedCancel').addEventListener('click', () => {
   document.getElementById('feedForm').classList.add('hidden');
 });
-
+ 
 document.getElementById('feedSubmit').addEventListener('click', () => {
   const url = document.getElementById('feedUrlInput').value.trim();
   const name = document.getElementById('feedNameInput').value.trim();
@@ -783,49 +783,52 @@ document.getElementById('feedSubmit').addEventListener('click', () => {
   renderFeeds();
   showToast('feed added');
 });
-
+ 
 // Resume card click
 document.getElementById('resumeCard').addEventListener('click', () => {
   const item = state.queue.find(i => i.id === state.lastRead);
   if (item) openItem(item);
 });
-
+ 
 // ── OPEN ITEM ──────────────────────────────────────────────────────────
 let currentItem = null;
 let scrollEl = null;
 let scrollSaveTimer = null;
-
+ 
 function openItem(item) {
   currentItem = item;
   state.lastRead = item.id;
   save(state);
-
+ 
   showScreen('reader');
-
+ 
   document.getElementById('readerSource').textContent = hostname(item.url);
   document.getElementById('readerBarFill').style.width = '0%';
-
+ 
   // Hide all reader views
   document.getElementById('reader-loading').style.display = 'none';
   document.getElementById('article-content').style.display = 'none';
   document.getElementById('pdf-frame').style.display = 'none';
   document.getElementById('article-frame').style.display = 'none';
   document.getElementById('external-view').style.display = 'none';
-
+ 
   if (item.type === 'pdf') {
     openPDF(item);
   } else {
     openArticle(item);
   }
 }
-
+ 
 async function openArticle(item) {
   document.getElementById('reader-loading').style.display = 'flex';
-
-  // Try fetching via allorigins proxy
+ 
+  // Try fetching via allorigins proxy with a hard 6s timeout
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
     const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(item.url)}`;
-    const res = await fetch(proxy);
+    const res = await fetch(proxy, { signal: controller.signal });
+    clearTimeout(timeout);
     const data = await res.json();
     if (data.contents) {
       const parsed = parseArticle(data.contents, item.url);
@@ -835,30 +838,27 @@ async function openArticle(item) {
       }
     }
   } catch(e) {}
-
-  // Fallback: try embedding in iframe
-  try {
-    showIframeView(item);
-  } catch(e) {
-    showExternalView(item);
-  }
+ 
+  // Proxy failed or timed out — go straight to external view
+  // Sites that block proxies (like neuralnetworksanddeeplearning.com) work fine opened directly
+  showExternalView(item);
 }
-
+ 
 function parseArticle(html, baseUrl) {
   const parser = new DOMParser();
   const doc = parser.parseFromString(html, 'text/html');
-
+ 
   // Try to get title
   const title =
     doc.querySelector('h1')?.textContent?.trim() ||
     doc.querySelector('title')?.textContent?.trim() ||
     '';
-
+ 
   // Remove noise
   ['script','style','nav','header','footer','aside','.sidebar','.menu','.ad','.advertisement','.cookie','[role="banner"]','[role="navigation"]'].forEach(sel => {
     doc.querySelectorAll(sel).forEach(el => el.remove());
   });
-
+ 
   // Find main content
   const candidates = ['article','main','[role="main"]','.post-content','.article-content','.entry-content','.content','#content','.post','body'];
   let content = null;
@@ -867,7 +867,7 @@ function parseArticle(html, baseUrl) {
     if (el && el.textContent.trim().length > 200) { content = el; break; }
   }
   if (!content) content = doc.body;
-
+ 
   // Fix relative URLs
   content.querySelectorAll('img').forEach(img => {
     const src = img.getAttribute('src');
@@ -875,19 +875,19 @@ function parseArticle(html, baseUrl) {
       try { img.src = new URL(src, baseUrl).href; } catch {}
     }
   });
-
+ 
   return { title, text: content.innerHTML };
 }
-
+ 
 function showArticleContent(item, parsed) {
   document.getElementById('reader-loading').style.display = 'none';
   const contentEl = document.getElementById('article-content');
   contentEl.style.display = 'block';
-
+ 
   document.getElementById('article-title').textContent = item.title || parsed.title;
   document.getElementById('article-meta').textContent = hostname(item.url) + ' · ' + new Date(item.added).toLocaleDateString();
   document.getElementById('article-body').innerHTML = parsed.text;
-
+ 
   // Restore scroll position
   scrollEl = contentEl;
   const prog = state.progress[item.id];
@@ -897,21 +897,21 @@ function showArticleContent(item, parsed) {
       contentEl.scrollTop = (prog.scrollPct / 100) * maxScroll;
     }, 100);
   }
-
+ 
   // Track scroll
   contentEl.addEventListener('scroll', onScroll, { passive: true });
 }
-
+ 
 function showIframeView(item) {
   document.getElementById('reader-loading').style.display = 'none';
   const frame = document.getElementById('article-frame');
   frame.style.display = 'block';
   frame.style.paddingTop = '50px';
   frame.src = item.url;
-
+ 
   // Can't track scroll in cross-origin iframe — save timestamp only
   saveProgress(item.id, state.progress[item.id]?.scrollPct || 0);
-
+ 
   frame.onerror = () => showExternalView(item);
   setTimeout(() => {
     // If iframe didn't load, show external
@@ -920,7 +920,7 @@ function showIframeView(item) {
     } catch { showExternalView(item); }
   }, 3000);
 }
-
+ 
 function showExternalView(item) {
   document.getElementById('reader-loading').style.display = 'none';
   const el = document.getElementById('external-view');
@@ -931,7 +931,7 @@ function showExternalView(item) {
     window.open(item.url, '_blank');
   };
 }
-
+ 
 function openPDF(item) {
   document.getElementById('reader-loading').style.display = 'none';
   const frame = document.getElementById('pdf-frame');
@@ -941,22 +941,22 @@ function openPDF(item) {
   frame.src = viewer;
   saveProgress(item.id, state.progress[item.id]?.scrollPct || 0);
 }
-
+ 
 // ── SCROLL TRACKING ────────────────────────────────────────────────────
 function onScroll() {
   if (!scrollEl || !currentItem) return;
   const pct = (scrollEl.scrollTop / (scrollEl.scrollHeight - scrollEl.clientHeight)) * 100;
   document.getElementById('readerBarFill').style.width = Math.min(pct, 100) + '%';
-
+ 
   clearTimeout(scrollSaveTimer);
   scrollSaveTimer = setTimeout(() => saveProgress(currentItem.id, pct), 500);
 }
-
+ 
 function saveProgress(id, scrollPct) {
   state.progress[id] = { scrollPct, timestamp: Date.now() };
   save(state);
 }
-
+ 
 // ── BACK ───────────────────────────────────────────────────────────────
 document.getElementById('readerBack').addEventListener('click', () => {
   // Clean up
@@ -968,25 +968,25 @@ document.getElementById('readerBack').addEventListener('click', () => {
   showScreen('home');
   renderHome();
 });
-
+ 
 // ── UTILS ──────────────────────────────────────────────────────────────
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
+ 
 function detectType(url) {
   if (url.includes('arxiv.org/pdf') || url.endsWith('.pdf')) return 'pdf';
   if (url.includes('arxiv.org/abs')) return 'arxiv';
   if (url.includes('youtube.com') || url.includes('youtu.be')) return 'video';
   return 'article';
 }
-
+ 
 function hostname(url) {
   try { return new URL(url).hostname.replace('www.', ''); }
   catch { return url; }
 }
-
+ 
 async function fetchTitle(url) {
   try {
     const proxy = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
@@ -998,14 +998,14 @@ async function fetchTitle(url) {
     return hostname(url);
   }
 }
-
+ 
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2000);
 }
-
+ 
 // ── RSS FETCHING ───────────────────────────────────────────────────────
 async function fetchFeedItems(feed) {
   try {
@@ -1021,7 +1021,7 @@ async function fetchFeedItems(feed) {
     }).filter(i => i.url);
   } catch { return []; }
 }
-
+ 
 async function refreshFeeds() {
   for (const feed of state.feeds) {
     const items = await fetchFeedItems(feed);
@@ -1033,12 +1033,12 @@ async function refreshFeeds() {
   save(state);
   renderQueue();
 }
-
+ 
 // ── INIT ───────────────────────────────────────────────────────────────
 renderHome();
 // Refresh feeds in background
 setTimeout(refreshFeeds, 1000);
-
+ 
 // Service worker for offline
 if ('serviceWorker' in navigator) {
   const sw = `
@@ -1055,3 +1055,4 @@ if ('serviceWorker' in navigator) {
 </script>
 </body>
 </html>
+ 
