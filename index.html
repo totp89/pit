@@ -314,7 +314,10 @@
   /* ── READER SCREEN ── */
   #reader {
     background: var(--bg);
-    position: relative;
+    position: fixed;
+    inset: 0;
+    padding-top: 0;
+    padding-bottom: 0;
   }
  
   .reader-bar {
@@ -613,8 +616,8 @@
   <div id="external-view">
     <div class="ext-icon">↗</div>
     <div class="ext-title" id="ext-title"></div>
-    <div class="ext-sub">This site can't be embedded directly.<br>It'll open in Safari — come back when you're done and your place is saved.</div>
-    <button class="ext-btn" id="ext-open">Open in Safari</button>
+    <div class="ext-sub">This site can't be embedded.<br>Tap open — Safari will navigate there and show a back button to return here. For clean reading with no clutter, tap the Reader Mode icon (≡) in the Safari address bar after it opens.</div>
+    <button class="ext-btn" id="ext-open">Open article</button>
   </div>
 </div>
  
@@ -928,7 +931,9 @@ function showExternalView(item) {
   document.getElementById('ext-title').textContent = item.title || item.url;
   document.getElementById('ext-open').onclick = () => {
     saveProgress(item.id, state.progress[item.id]?.scrollPct || 0);
-    window.open(item.url, '_blank');
+    // Navigate in same window — Safari will show the back button to return to Pit
+    // Enable Reader Mode in Safari settings for cleanest reading experience
+    window.location.href = item.url;
   };
 }
  
